@@ -1,0 +1,24 @@
+{
+  "name": "@brianmmdev/clerk-webhooks-handler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bmorrisondev/clerk-webhooks-handler.git"
+  },
+  "version": "1.0.1",
+  "author": "Brian Morrison II",
+  "license": "ISC",
+  "description": "A package to streamline the configuration of Clerk webhooks in a Next.js application.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "publish": "npm publish --access public"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^5.0.3",
+    "svix": "^1.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  }
+}
