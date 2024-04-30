@@ -32,6 +32,6 @@ const handler = createWebhooksHandler({
 export const POST = handler.POST
 ```
 
-Watch this demo to learn more about how to use the package:
+Watch this demo to learn more about how to use the package: https://f.io/XKnnF3cN
 
 Please also ping me on Twitter with feedback: https://twitter.com/brianmmdev
