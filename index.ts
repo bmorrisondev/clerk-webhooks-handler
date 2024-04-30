@@ -120,7 +120,7 @@ export async function handleWebhooks(config: WebhookRegistrationConfig, req: Req
 }
 
 async function _handler(event: WebhookEvent, callback: Function): Promise<Response> {
-  let response = await callback(event)
+  let response = await callback(event.data)
   if(response != undefined) {
     return response
   } else {
