@@ -1,5 +1,4 @@
-import { EmailJSON, SMSMessageJSON, WebhookEvent } from "@clerk/nextjs/server";
-import { DeletedObjectJSON, OrganizationJSON, UserJSON, SessionJSON, OrganizationMembershipJSON, OrganizationInvitationJSON } from "@clerk/types";
+import { EmailJSON, SMSMessageJSON, WebhookEvent, DeletedObjectJSON, OrganizationJSON, UserJSON, SessionJSON, OrganizationMembershipJSON, OrganizationInvitationJSON } from "@clerk/backend";
 import { Webhook } from "svix"
 
 export function createWebhooksHandler(config: WebhookRegistrationConfig): WebhooksHandler {
