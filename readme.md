@@ -23,7 +23,7 @@ npm install @brianmmdev/clerk-webhooks-handler
 
 To run this project, you will need to add the following environment variables to your .env file:
 
-- `WEBHOOK_SECRET` &emdash; The value obtained from the Clerk dashboard when registering a new endpoint.
+- `WEBHOOK_SECRET` — The _Signing Secret_ value obtained from the Clerk dashboard when registering a new endpoint.
 
 ## Usage/Examples
 
@@ -37,6 +37,7 @@ The following example shows what this route handler would look like with the `on
 
 ```ts
 import { createWebhooksHandler } from "@brianmmdev/clerk-webhooks-handler";
+import { UserJSON, SessionJSON } from "@clerk/nextjs/server";
 
 const handler = createWebhooksHandler({
   // Add/remove optional handlers to get access to the data.
