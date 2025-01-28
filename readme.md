@@ -61,9 +61,6 @@ export type WebhookRegistrationConfig = {
   onOrganizationCreated?: HandlerFn<OrganizationJSON>;
   onOrganizationDeleted?: HandlerFn<DeletedObjectJSON>;
   onOrganizationUpdated?: HandlerFn<OrganizationJSON>;
-  onOrganizationDomainCreated?: HandlerFn<OrganizationJSON>;
-  onOrganizationDomainDeleted?: HandlerFn<OrganizationJSON>;
-  onOrganizationDomainUpdated?: HandlerFn<OrganizationJSON>;
   onOrganizationInvitationAccepted?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationCreated?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationRevoked?: HandlerFn<OrganizationInvitationJSON>;
