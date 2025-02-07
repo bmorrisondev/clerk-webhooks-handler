@@ -49,6 +49,7 @@ type WebhooksHandlerMap = {
     HandlerFn<EmailJSON> |
     HandlerFn<PermissionJSON> |
     HandlerFn<RoleJSON> |
+    HandlerFn<OrganizationDomainJSON> |
     HandlerFn<HandlerType> |
     undefined
 }
