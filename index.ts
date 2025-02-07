@@ -7,10 +7,10 @@ import {
   UserJSON, 
   SessionJSON, 
   OrganizationMembershipJSON, 
-  OrganizationInvitationJSON 
+  OrganizationInvitationJSON,
 } from "@clerk/backend";
-import { PermissionJSON, RoleJSON } from "@clerk/backend/dist/api";
 import { Webhook } from "svix"
+import type { RoleJSON, PermissionJSON, OrganizationDomainJSON } from '@clerk/types';
 
 export function createWebhooksHandler(config: WebhookRegistrationConfig): WebhooksHandler {
   return {
@@ -33,7 +33,8 @@ type HandlerType = UserJSON |
   OrganizationInvitationJSON | 
   EmailJSON | 
   PermissionJSON | 
-  RoleJSON
+  RoleJSON |
+  OrganizationDomainJSON
 
 type HandlerFn<T extends HandlerType> = (payload: T) => Promise<void | Response>
 
@@ -48,6 +49,7 @@ type WebhooksHandlerMap = {
     HandlerFn<EmailJSON> |
     HandlerFn<PermissionJSON> |
     HandlerFn<RoleJSON> |
+    HandlerFn<HandlerType> |
     undefined
 }
 
@@ -57,9 +59,9 @@ export type WebhookRegistrationConfig = {
   onOrganizationCreated?: HandlerFn<OrganizationJSON>;
   onOrganizationDeleted?: HandlerFn<DeletedObjectJSON>;
   onOrganizationUpdated?: HandlerFn<OrganizationJSON>;
-  // onOrganizationDomainCreated?: HandlerFn<OrganizationJSON>;
-  // onOrganizationDomainDeleted?: HandlerFn<OrganizationJSON>;
-  // onOrganizationDomainUpdated?: HandlerFn<OrganizationJSON>;
+  onOrganizationDomainCreated?: HandlerFn<OrganizationDomainJSON>;
+  onOrganizationDomainDeleted?: HandlerFn<DeletedObjectJSON>;
+  onOrganizationDomainUpdated?: HandlerFn<OrganizationDomainJSON>;
   onOrganizationInvitationAccepted?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationCreated?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationRevoked?: HandlerFn<OrganizationInvitationJSON>;
@@ -130,9 +132,9 @@ export async function handleWebhooks(config: WebhookRegistrationConfig, req: Req
     'organization.created': config.onOrganizationCreated,
     'organization.deleted': config.onOrganizationDeleted,
     'organization.updated': config.onOrganizationUpdated,
-    // 'organizationDomain.created': config.onOrganizationDomainCreated,
-    // 'organizationDomain.deleted': config.onOrganizationDomainDeleted,
-    // 'organizationDomain.updated': config.onOrganizationDomainUpdated,
+    'organizationDomain.created': config.onOrganizationDomainCreated,
+    'organizationDomain.deleted': config.onOrganizationDomainDeleted,
+    'organizationDomain.updated': config.onOrganizationDomainUpdated,
     'organizationInvitation.accepted': config.onOrganizationInvitationAccepted,
     'organizationInvitation.created': config.onOrganizationInvitationCreated,
     'organizationInvitation.revoked': config.onOrganizationInvitationRevoked,  
