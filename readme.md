@@ -57,24 +57,34 @@ The `WebhookRegistrationConfig` object defines all supported callbacks, which in
 ```ts
 export type WebhookRegistrationConfig = {
   secret?: string
-  onUserCreated?: HandlerFn<UserJSON>;
-  onUserUpdated?: HandlerFn<UserJSON>;
-  onUserDeleted?: HandlerFn<DeletedObjectJSON>;
   onEmailCreated?: HandlerFn<EmailJSON>;
-  onSmsCreated?: HandlerFn<SMSMessageJSON>;
-  onSessionCreated?: HandlerFn<SessionJSON>;
-  onSessionEnded?: HandlerFn<SessionJSON>;
-  onSessionRemoved?: HandlerFn<SessionJSON>;
-  onSessionRevoked?: HandlerFn<SessionJSON>;
   onOrganizationCreated?: HandlerFn<OrganizationJSON>;
-  onOrganizationUpdated?: HandlerFn<OrganizationJSON>;
   onOrganizationDeleted?: HandlerFn<DeletedObjectJSON>;
-  onOrganizationMembershipCreated?: HandlerFn<OrganizationMembershipJSON>;
-  onOrganizationMembershipDeleted?: HandlerFn<OrganizationMembershipJSON>;
-  onOrganizationMembershipUpdated?: HandlerFn<OrganizationMembershipJSON>;
+  onOrganizationUpdated?: HandlerFn<OrganizationJSON>;
   onOrganizationInvitationAccepted?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationCreated?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationRevoked?: HandlerFn<OrganizationInvitationJSON>;
+  onOrganizationMembershipCreated?: HandlerFn<OrganizationMembershipJSON>;
+  onOrganizationMembershipDeleted?: HandlerFn<DeletedObjectJSON>;
+  onOrganizationMembershipUpdated?: HandlerFn<OrganizationMembershipJSON>;
+  onPermissionCreated?: HandlerFn<PermissionJSON>;
+  onPermissionDeleted?: HandlerFn<DeletedObjectJSON>;
+  onPermissionUpdated?: HandlerFn<PermissionJSON>;
+  onRoleCreated?: HandlerFn<RoleJSON>;
+  onRoleDeleted?: HandlerFn<DeletedObjectJSON>;
+  onRoleUpdated?: HandlerFn<RoleJSON>;
+  onSessionCreated?: HandlerFn<SessionJSON>;
+  onSessionEnded?: HandlerFn<SessionJSON>;
+  onSessionPending?: HandlerFn<SessionJSON>;
+  onSessionRemoved?: HandlerFn<SessionJSON>;
+  onSessionRevoked?: HandlerFn<SessionJSON>;
+  onSmsCreated?: HandlerFn<SMSMessageJSON>;
+  onUserCreated?: HandlerFn<UserJSON>;
+  onUserCreatedAtEdge?: HandlerFn<UserJSON>;
+  onUserDeleted?: HandlerFn<DeletedObjectJSON>;
+  onUserUpdated?: HandlerFn<UserJSON>;
+  onWaitlistEntryCreated?: HandlerFn<OrganizationJSON>;
+  onWaitlistEntryUpdated?: HandlerFn<OrganizationJSON>;
 }
 ```
 

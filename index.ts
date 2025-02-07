@@ -1,5 +1,16 @@
-import { EmailJSON, SMSMessageJSON, WebhookEvent, DeletedObjectJSON, OrganizationJSON, UserJSON, SessionJSON, OrganizationMembershipJSON, OrganizationInvitationJSON } from "@clerk/backend";
+import { 
+  EmailJSON, 
+  SMSMessageJSON, 
+  WebhookEvent, 
+  DeletedObjectJSON, 
+  OrganizationJSON, 
+  UserJSON, 
+  SessionJSON, 
+  OrganizationMembershipJSON, 
+  OrganizationInvitationJSON,
+} from "@clerk/backend";
 import { Webhook } from "svix"
+import type { RoleJSON, PermissionJSON, OrganizationDomainJSON } from '@clerk/types';
 
 export function createWebhooksHandler(config: WebhookRegistrationConfig): WebhooksHandler {
   return {
@@ -13,7 +24,18 @@ type WebhooksHandler = {
   POST: (req: Request) => Promise<Response>
 }
 
-type HandlerType = UserJSON | OrganizationJSON | DeletedObjectJSON | SMSMessageJSON | SessionJSON | OrganizationMembershipJSON | OrganizationInvitationJSON | EmailJSON
+type HandlerType = UserJSON | 
+  OrganizationJSON | 
+  DeletedObjectJSON | 
+  SMSMessageJSON | 
+  SessionJSON | 
+  OrganizationMembershipJSON | 
+  OrganizationInvitationJSON | 
+  EmailJSON | 
+  PermissionJSON | 
+  RoleJSON |
+  OrganizationDomainJSON
+
 type HandlerFn<T extends HandlerType> = (payload: T) => Promise<void | Response>
 
 type WebhooksHandlerMap = {
@@ -25,29 +47,45 @@ type WebhooksHandlerMap = {
     HandlerFn<OrganizationMembershipJSON> |
     HandlerFn<OrganizationInvitationJSON> |
     HandlerFn<EmailJSON> |
+    HandlerFn<PermissionJSON> |
+    HandlerFn<RoleJSON> |
+    HandlerFn<HandlerType> |
     undefined
 }
 
 export type WebhookRegistrationConfig = {
   secret?: string
-  onUserCreated?: HandlerFn<UserJSON>;
-  onUserUpdated?: HandlerFn<UserJSON>;
-  onUserDeleted?: HandlerFn<DeletedObjectJSON>;
   onEmailCreated?: HandlerFn<EmailJSON>;
-  onSmsCreated?: HandlerFn<SMSMessageJSON>;
-  onSessionCreated?: HandlerFn<SessionJSON>;
-  onSessionEnded?: HandlerFn<SessionJSON>;
-  onSessionRemoved?: HandlerFn<SessionJSON>;
-  onSessionRevoked?: HandlerFn<SessionJSON>;
   onOrganizationCreated?: HandlerFn<OrganizationJSON>;
-  onOrganizationUpdated?: HandlerFn<OrganizationJSON>;
   onOrganizationDeleted?: HandlerFn<DeletedObjectJSON>;
-  onOrganizationMembershipCreated?: HandlerFn<OrganizationMembershipJSON>;
-  onOrganizationMembershipDeleted?: HandlerFn<OrganizationMembershipJSON>;
-  onOrganizationMembershipUpdated?: HandlerFn<OrganizationMembershipJSON>;
+  onOrganizationUpdated?: HandlerFn<OrganizationJSON>;
+  onOrganizationDomainCreated?: HandlerFn<OrganizationDomainJSON>;
+  onOrganizationDomainDeleted?: HandlerFn<DeletedObjectJSON>;
+  onOrganizationDomainUpdated?: HandlerFn<OrganizationDomainJSON>;
   onOrganizationInvitationAccepted?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationCreated?: HandlerFn<OrganizationInvitationJSON>;
   onOrganizationInvitationRevoked?: HandlerFn<OrganizationInvitationJSON>;
+  onOrganizationMembershipCreated?: HandlerFn<OrganizationMembershipJSON>;
+  onOrganizationMembershipDeleted?: HandlerFn<DeletedObjectJSON>;
+  onOrganizationMembershipUpdated?: HandlerFn<OrganizationMembershipJSON>;
+  onPermissionCreated?: HandlerFn<PermissionJSON>;
+  onPermissionDeleted?: HandlerFn<DeletedObjectJSON>;
+  onPermissionUpdated?: HandlerFn<PermissionJSON>;
+  onRoleCreated?: HandlerFn<RoleJSON>;
+  onRoleDeleted?: HandlerFn<DeletedObjectJSON>;
+  onRoleUpdated?: HandlerFn<RoleJSON>;
+  onSessionCreated?: HandlerFn<SessionJSON>;
+  onSessionEnded?: HandlerFn<SessionJSON>;
+  onSessionPending?: HandlerFn<SessionJSON>;
+  onSessionRemoved?: HandlerFn<SessionJSON>;
+  onSessionRevoked?: HandlerFn<SessionJSON>;
+  onSmsCreated?: HandlerFn<SMSMessageJSON>;
+  onUserCreated?: HandlerFn<UserJSON>;
+  onUserCreatedAtEdge?: HandlerFn<UserJSON>;
+  onUserDeleted?: HandlerFn<DeletedObjectJSON>;
+  onUserUpdated?: HandlerFn<UserJSON>;
+  onWaitlistEntryCreated?: HandlerFn<OrganizationJSON>;
+  onWaitlistEntryUpdated?: HandlerFn<OrganizationJSON>;
 }
 
 export async function handleWebhooks(config: WebhookRegistrationConfig, req: Request): Promise<Response> {
@@ -90,24 +128,36 @@ export async function handleWebhooks(config: WebhookRegistrationConfig, req: Req
   }
 
   const handlerMap: WebhooksHandlerMap = {
-    'user.created': config.onUserCreated,
-    'user.updated': config.onUserUpdated,
-    'user.deleted': config.onUserDeleted,
     'email.created': config.onEmailCreated,
-    'sms.created': config.onSmsCreated,
-    'session.created': config.onSessionCreated,
-    'session.ended': config.onSessionEnded,
-    'session.removed': config.onSessionRemoved,
-    'session.revoked': config.onSessionRevoked,
     'organization.created': config.onOrganizationCreated,
-    'organization.updated': config.onOrganizationUpdated,
     'organization.deleted': config.onOrganizationDeleted,
+    'organization.updated': config.onOrganizationUpdated,
+    'organizationDomain.created': config.onOrganizationDomainCreated,
+    'organizationDomain.deleted': config.onOrganizationDomainDeleted,
+    'organizationDomain.updated': config.onOrganizationDomainUpdated,
+    'organizationInvitation.accepted': config.onOrganizationInvitationAccepted,
+    'organizationInvitation.created': config.onOrganizationInvitationCreated,
+    'organizationInvitation.revoked': config.onOrganizationInvitationRevoked,  
     'organizationMembership.created': config.onOrganizationMembershipCreated,
     'organizationMembership.deleted': config.onOrganizationMembershipDeleted,
     'organizationMembership.updated': config.onOrganizationMembershipUpdated,
-    'organizationInvitation.accepted': config.onOrganizationInvitationAccepted,
-    'organizationInvitation.created': config.onOrganizationInvitationCreated,
-    'organizationInvitation.revoked': config.onOrganizationInvitationRevoked
+    'permission.created': config.onPermissionCreated,
+    'permission.deleted': config.onPermissionDeleted,
+    'permission.updated': config.onPermissionUpdated,
+    'role.created': config.onRoleCreated,
+    'role.deleted': config.onRoleDeleted,
+    'role.updated': config.onRoleUpdated,
+    'session.created': config.onSessionCreated,
+    'session.ended': config.onSessionEnded,
+    'session.pending': config.onSessionPending,
+    'session.removed': config.onSessionRemoved,
+    'session.revoked': config.onSessionRevoked,
+    'sms.created': config.onSmsCreated,
+    'user.created': config.onUserCreated,
+    'user.deleted': config.onUserDeleted,
+    'user.updated': config.onUserUpdated,
+    'waitlistEntry.created': config.onWaitlistEntryCreated,
+    'waitlistEntry.updated': config.onWaitlistEntryUpdated,
   }
 
   if(handlerMap[evt.type]) {
